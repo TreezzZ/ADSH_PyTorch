@@ -45,6 +45,7 @@ optional arguments:
 ## EXPERIMENTS
 cifar10: 1000 query images, 2000 sampling images.
 
+model: Alexnet
 
  | | 12 bits | 24 bits | 32 bits | 48 bits 
    :-:   |  :-:    |   :-:   |   :-:   |   :-:     
