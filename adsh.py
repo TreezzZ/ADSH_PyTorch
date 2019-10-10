@@ -90,7 +90,7 @@ def train(
         B = solve_dcc(B, U, expand_U, S, code_length, gamma)
 
         # Total loss
-        iter_loss = calc_loss(U, B, S, code_length, sample_index)
+        iter_loss = calc_loss(U, B, S, code_length, sample_index, gamma)
         logger.debug('[iter:{}/{}][loss:{:.2f}]'.format(it+1, max_iter, iter_loss))
 
     # Evaluate
@@ -131,13 +131,13 @@ def solve_dcc(B, U, expand_U, S, code_length, gamma):
     return B
 
 
-def calc_loss(U, B, S, code_length, omega):
+def calc_loss(U, B, S, code_length, omega, gamma):
     """
     Calculate loss.
     """
     hash_loss = ((code_length * S - U @ B.t()) ** 2).sum()
     quantization_loss = ((U - B[omega, :]) ** 2).sum()
-    loss = (hash_loss + quantization_loss) / (U.shape[0] * B.shape[0])
+    loss = (hash_loss + gamma * quantization_loss) / (U.shape[0] * B.shape[0])
 
     return loss.item()
 
