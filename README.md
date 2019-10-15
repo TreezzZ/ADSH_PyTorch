@@ -44,6 +44,8 @@ optional arguments:
 ## EXPERIMENTS
 cifar10: 1000 query images, 2000 sampling images.
 
+nus-wide: Top 21 classes, 2100 query images, 2000 sampling images.
+
 model: Alexnet
 
  | | 12 bits | 24 bits | 32 bits | 48 bits 
