@@ -11,8 +11,10 @@ def run():
     logger.add('logs/{time}.log', rotation='500 MB', level='INFO')
     logger.info(args)
 
+    torch.backends.cudnn.benchmark = True
+
     # Load dataset
-    query_dataloader, train_dataloader, retrieval_dataloader = load_data(
+    query_dataloader, _, retrieval_dataloader = load_data(
         args.dataset,
         args.root,
         args.num_query,
@@ -21,22 +23,24 @@ def run():
         args.num_workers,
     )
 
-    mAP = adsh.train(
-        query_dataloader,
-        retrieval_dataloader,
-        args.code_length,
-        args.device,
-        args.lr,
-        args.max_iter,
-        args.max_epoch,
-        args.num_samples,
-        args.batch_size,
-        args.root,
-        args.dataset,
-        args.gamma,
-        args.topk,
-    )
-    logger.info('[map:{:.4f}]'.format(mAP))
+    for c in [24, 32, 48]:
+        args.code_length = c
+        mAP = adsh.train(
+            query_dataloader,
+            retrieval_dataloader,
+            args.code_length,
+            args.device,
+            args.lr,
+            args.max_iter,
+            args.max_epoch,
+            args.num_samples,
+            args.batch_size,
+            args.root,
+            args.dataset,
+            args.gamma,
+            args.topk,
+        )
+        logger.info('[code_length:{}][map:{:.4f}]'.format(c, mAP))
 
 
 def load_config():
@@ -55,7 +59,7 @@ def load_config():
     parser.add_argument('--root',
                         help='Path of dataset')
     parser.add_argument('--batch-size', default=64, type=int,
-                        help='Batch size.(default: 128)')
+                        help='Batch size.(default: 64)')
     parser.add_argument('--lr', default=1e-4, type=float,
                         help='Learning rate.(default: 1e-4)')
     parser.add_argument('--code-length', default=12, type=int,

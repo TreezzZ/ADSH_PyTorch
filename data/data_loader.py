@@ -36,7 +36,7 @@ def load_data(dataset, root, num_query, num_train, batch_size, num_workers):
                                                                                      batch_size,
                                                                                      num_workers,
                                                                                      )
-    elif dataset == 'nus-wide-tc-10':
+    elif dataset == 'nus-wide-tc10':
         query_dataloader, train_dataloader, retrieval_dataloader = nuswide.load_data(10,
                                                                                      root,
                                                                                      num_query,
@@ -44,7 +44,7 @@ def load_data(dataset, root, num_query, num_train, batch_size, num_workers):
                                                                                      batch_size,
                                                                                      num_workers,
                                                                                      )
-    elif dataset == 'nus-wide-tc-21':
+    elif dataset == 'nus-wide-tc21':
         query_dataloader, train_dataloader, retrieval_dataloader = nuswide.load_data(21,
                                                                                      root,
                                                                                      num_query,
@@ -128,7 +128,7 @@ def wrap_data(data, targets, batch_size, root, dataset):
                 if self.transform is not None:
                     img = self.transform(img)
             else:
-                img = Image.open(os.path.join(self.root, 'images', self.data[index])).convert('RGB')
+                img = Image.open(os.path.join(self.root, self.data[index])).convert('RGB')
                 img = self.transform(img)
             return img, self.targets[index], index
 

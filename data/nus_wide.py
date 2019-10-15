@@ -114,7 +114,7 @@ class NusWideDatasetTc10(Dataset):
         return self.data.shape[0]
 
     def get_targets(self):
-        return torch.FloatTensor(self.targets)
+        return torch.from_numpy(self.targets).float()
 
     @staticmethod
     def init(root, num_query, num_train):
@@ -191,5 +191,5 @@ class NusWideDatasetTC21(Dataset):
     def __len__(self):
         return len(self.data)
 
-    def get_targets(self):
-        return torch.FloatTensor(self.targets)
+    def get_onehot_targets(self):
+        return torch.from_numpy(self.targets).float()

@@ -6,8 +6,7 @@
 
 ## DATASETS
 1. [CIFAR-10](http://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz)
-2. [Flickr25k](https://pan.baidu.com/s/1Bcr5K33l7QFwIRygNxwJ4w) Password: ve86
-3. [NUS-WIDE](https://pan.baidu.com/s/1f9mKXE2T8XpIq8p7y8Fa6Q) Password: uhr3
+2. [NUS-WIDE](https://pan.baidu.com/s/1f9mKXE2T8XpIq8p7y8Fa6Q) Password: uhr3
 
 ## USAGE
 ```
@@ -24,7 +23,7 @@ optional arguments:
   --dataset DATASET     Dataset name.
   --root ROOT           Path of dataset
   --batch-size BATCH_SIZE
-                        Batch size.(default: 128)
+                        Batch size.(default: 64)
   --lr LR               Learning rate.(default: 1e-4)
   --code-length CODE_LENGTH
                         Binary hash code length.(default: 12)
@@ -49,4 +48,5 @@ model: Alexnet
 
  | | 12 bits | 24 bits | 32 bits | 48 bits 
    :-:   |  :-:    |   :-:   |   :-:   |   :-:     
-cifar-10 MAP@ALL| 0.9075 | 0.9047 | 0.9116 | 0.9045
+cifar-10 MAP@ALL | 0.9075 | 0.9047 | 0.9116 | 0.9045
+nus-wide MAP@5000 | 0.8698 | 0.9022 | 0.9079 | 0.9133
