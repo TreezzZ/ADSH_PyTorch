@@ -23,24 +23,22 @@ def run():
         args.num_workers,
     )
 
-    for c in [24, 32, 48]:
-        args.code_length = c
-        mAP = adsh.train(
-            query_dataloader,
-            retrieval_dataloader,
-            args.code_length,
-            args.device,
-            args.lr,
-            args.max_iter,
-            args.max_epoch,
-            args.num_samples,
-            args.batch_size,
-            args.root,
-            args.dataset,
-            args.gamma,
-            args.topk,
-        )
-        logger.info('[code_length:{}][map:{:.4f}]'.format(c, mAP))
+    mAP = adsh.train(
+        query_dataloader,
+        retrieval_dataloader,
+        args.code_length,
+        args.device,
+        args.lr,
+        args.max_iter,
+        args.max_epoch,
+        args.num_samples,
+        args.batch_size,
+        args.root,
+        args.dataset,
+        args.gamma,
+        args.topk,
+    )
+    logger.info('[map:{:.4f}]'.format(mAP))
 
 
 def load_config():
