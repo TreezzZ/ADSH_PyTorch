@@ -1,6 +1,7 @@
 import torch
 import torch.optim as optim
 import os
+import time
 import models.alexnet as alexnet
 import utils.evaluate as evaluate
 
@@ -58,7 +59,9 @@ def train(
     B = torch.randn(num_retrieval, code_length).to(device)
     retrieval_targets = retrieval_dataloader.dataset.get_onehot_targets().to(device)
 
+    start = time.time()
     for it in range(max_iter):
+        iter_start = time.time()
         # Sample training data for cnn learning
         train_dataloader, sample_index = sample_dataloader(retrieval_dataloader, num_samples, batch_size, root, dataset)
 
@@ -79,7 +82,7 @@ def train(
 
                 F = model(data)
                 U[index, :] = F.data
-                cnn_loss = criterion(F, B, S[index, :], index)
+                cnn_loss = criterion(F, B, S[index, :], sample_index[index])
 
                 cnn_loss.backward()
                 optimizer.step()
@@ -91,7 +94,8 @@ def train(
 
         # Total loss
         iter_loss = calc_loss(U, B, S, code_length, sample_index, gamma)
-        logger.debug('[iter:{}/{}][loss:{:.2f}]'.format(it+1, max_iter, iter_loss))
+        logger.debug('[iter:{}/{}][loss:{:.2f}][iter_time:{:.2f}]'.format(it+1, max_iter, iter_loss, time.time()-iter_start))
+    logger.info('[Training time:{:.2f}]'.format(time.time()-start))
 
     # Evaluate
     query_code = generate_code(model, query_dataloader, code_length, device)

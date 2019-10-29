@@ -1,7 +1,7 @@
 # Asymmetric Deep Supervised Hashing
 
 ## REQUIREMENTS
-1. pytorch 1.1
+1. pytorch >= 1.0
 2. loguru
 
 ## DATASETS

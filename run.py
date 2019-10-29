@@ -23,22 +23,23 @@ def run():
         args.num_workers,
     )
 
-    mAP = adsh.train(
-        query_dataloader,
-        retrieval_dataloader,
-        args.code_length,
-        args.device,
-        args.lr,
-        args.max_iter,
-        args.max_epoch,
-        args.num_samples,
-        args.batch_size,
-        args.root,
-        args.dataset,
-        args.gamma,
-        args.topk,
-    )
-    logger.info('[map:{:.4f}]'.format(mAP))
+    for code_length in args.code_length:
+        mAP = adsh.train(
+            query_dataloader,
+            retrieval_dataloader,
+            code_length,
+            args.device,
+            args.lr,
+            args.max_iter,
+            args.max_epoch,
+            args.num_samples,
+            args.batch_size,
+            args.root,
+            args.dataset,
+            args.gamma,
+            args.topk,
+        )
+        logger.info('[code_length:{}][map:{:.4f}]'.format(code_length, mAP))
 
 
 def load_config():
@@ -60,8 +61,8 @@ def load_config():
                         help='Batch size.(default: 64)')
     parser.add_argument('--lr', default=1e-4, type=float,
                         help='Learning rate.(default: 1e-4)')
-    parser.add_argument('--code-length', default=12, type=int,
-                        help='Binary hash code length.(default: 12)')
+    parser.add_argument('--code-length', default='12,24,32,48', type=str,
+                        help='Binary hash code length.(default: 12,24,32,48)')
     parser.add_argument('--max-iter', default=50, type=int,
                         help='Number of iterations.(default: 50)')
     parser.add_argument('--max-epoch', default=3, type=int,
@@ -86,6 +87,9 @@ def load_config():
         args.device = torch.device("cpu")
     else:
         args.device = torch.device("cuda:%d" % args.gpu)
+
+    # Hash code length
+    args.code_length = list(map(int, args.code_length.split(',')))
 
     return args
 
